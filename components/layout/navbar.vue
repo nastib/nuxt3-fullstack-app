@@ -21,29 +21,33 @@
             </svg>
           </button>
         </div>
+        <nuxt-link to="/">
+          <span class="sr-only">Workflow</span>
+          <img class="h-24 w-auto transition duration-500 scale-50 hover:scale-110" src="/img/logo_clear_fsj.png"/>
+        </nuxt-link>
         <nav class="hidden md:flex space-x-10">
           <nuxt-link to="/subscribe">
-            <span class="text-sm font-normal text-gray-500 hover:text-gray-900"> Premium </span>
+            <span class="text-base font-formal text-gray-500 hover:text-gray-900"> Premium </span>
           </nuxt-link>
           <nuxt-link to="/categories">
-            <span class="text-sm font-normal text-gray-500 hover:text-gray-900"> Videos </span>
+            <span class="text-base font-normal text-gray-500 hover:text-gray-900"> Videos </span>
           </nuxt-link>
           <nuxt-link to="/state-examples">
-            <span class="text-sm font-normal text-gray-500 hover:text-gray-900"> State </span>
+            <span class="text-base font-normal text-gray-500 hover:text-gray-900"> State </span>
           </nuxt-link>
           <nuxt-link to="/ask-jack/search">
-            <span class="text-sm font-normal text-gray-500 hover:text-gray-900"> Ask </span>
+            <span class="text-base font-normal text-gray-500 hover:text-gray-900"> Ask </span>
           </nuxt-link>
           <nuxt-link to="/dashboard">
-            <span class="text-sm font-normal text-gray-500 hover:text-gray-900"> Dashboard </span>
+            <span class="text-base font-normal text-gray-500 hover:text-gray-900"> Dashboard </span>
           </nuxt-link>
         </nav>
-        <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-          <nuxt-link v-if="!user" to="/login" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+        <div class=" hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+          <nuxt-link v-if="!user" to="/login" class=" transition duration-500 hover:scale-110 whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
             Sign in
           </nuxt-link>
 
-          <User v-if="user" :user="user" />
+          <user v-if="user" :user="user" :isLoggedIn="isLoggedIn"/>
 
           <nuxt-link
             v-if="!user"
@@ -89,8 +93,15 @@
 
 <script setup lang="ts">
 import BackButton from '~/components/elements/BackButton.vue';
+import User  from '@/components/User.vue';
 import { useState } from '#app';
-const user = useState('user');
+import { IUser } from '@/types/dto';
+
+const isLoggedIn = ref<boolean>(false);
+const user = useState('user') as unknown as IUser;
+
+user ? isLoggedIn.value = true : isLoggedIn.value = false
+
 const setColorTheme = (newTheme: Theme) => {
   useColorMode().preference = newTheme;
 };
